@@ -1,0 +1,13 @@
+# Render: use this if you use "Blueprint" deploy. Otherwise set in Dashboard (see below).
+# Root Directory: leave empty if this repo is BM-Backend (backend code at root).
+# Build Command:  npm install && npm run build
+# Start Command:  npm start
+services:
+  - type: web
+    name: booking-manager-api
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
