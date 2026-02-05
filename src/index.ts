@@ -8,6 +8,20 @@ const app = express();
 const PORT = process.env.PORT ?? 3001;
 const MONGODB_URI = process.env.MONGODB_URI ?? 'mongodb://localhost:27017/booking-manager';
 
+// Lazy MongoDB connect for Vercel serverless (no startup; connect on first request)
+let connectPromise: Promise<typeof mongoose> | null = null;
+app.use(async (_req, res, next) => {
+  if (mongoose.connection.readyState === 1) return next();
+  try {
+    if (!connectPromise) connectPromise = mongoose.connect(MONGODB_URI);
+    await connectPromise;
+    next();
+  } catch (e) {
+    console.error('MongoDB connect failed:', e);
+    res.status(500).json({ error: 'Database unavailable' });
+  }
+});
+
 app.use(cors({ origin: process.env.CORS_ORIGIN ?? true }));
 app.use(express.json());
 
