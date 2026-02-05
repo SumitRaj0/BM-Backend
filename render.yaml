@@ -1,0 +1,9 @@
+# Render: For EXISTING service set Build Command in Dashboard to:
+#   npm install && npm run build
+# (Start Command: npm start). Then redeploy.
+services:
+  - type: web
+    name: booking-manager-api
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
